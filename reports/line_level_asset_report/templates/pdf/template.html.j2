@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="/line_level_asset_report/templates/pdf/template.css" rel="stylesheet">
+        <title>Line level asset report</title>
+    </head>
+    <body>
+        <table>
+        
+        {% for row in data %}
+            <tr>
+            {% for col in row %}
+                <td>{{ col }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        
+        </table>
+    </body>
+</html>
