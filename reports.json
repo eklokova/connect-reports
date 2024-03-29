@@ -13,7 +13,76 @@
                 "vendor"
             ],
             "report_spec": "2",
-            "parameters": [],
+            "parameters": [
+                {
+                  "id": "product",
+                  "type": "product",
+                  "name": "Product List",
+                  "description": "Select the products you want to include in report",
+                  "required": true
+                },
+                {
+                  "id": "date",
+                  "type": "date_range",
+                  "name": "Report period",
+                  "description": "Provide the time period to create the report",
+                  "required": true
+                },
+                {
+                  "id": "status",
+                  "type": "choice",
+                  "name": "Asset status",
+                  "description": "Select the status of the asset you want to include in report",
+                  "required": true,
+                  "choices": [
+                    {
+                      "value": "all",
+                      "label": "All"
+                    },
+                    {
+                      "value": "draft",
+                      "label": "Draft"
+                    },
+                    {
+                      "value": "processing",
+                      "label": "Processing"
+                    },
+                    {
+                      "value": "suspended",
+                      "label": "Suspended"
+                    },
+                    {
+                      "value": "active",
+                      "label": "Active"
+                    },
+                    {
+                      "value": "terminating",
+                      "label": "Terminating"
+                    },
+                    {
+                      "value": "terminated",
+                      "label": "Terminated"
+                    }
+                  ]
+                },
+                {
+                  "id": "commitment_status",
+                  "type": "choice",
+                  "name": "three years commit",
+                  "required": true,
+                  "description": "Show orders with three commitment",
+                  "choices": [
+                    {
+                      "value": "all assets",
+                      "label": "all assets"
+                    },
+                    {
+                      "value": "3yc",
+                      "label": "with three years commit"
+                    }
+                  ]
+                }
+              ],
             "renderers": [
                 {
                     "id": "xlsx",
