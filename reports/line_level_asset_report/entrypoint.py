@@ -78,7 +78,14 @@ def generate(
                 progress_callback(counter, total)
                 continue
 
-        yield _process_line(asset, marketplace_params)
+        line = _process_line(asset, marketplace_params)
+        items = asset['items']
+        if not items:
+            yield line
+        else:
+            for item in items:
+                item_details = [item['id'],item['mpn'],item['display_name'],item['item_type'],item['quantity']]
+                yield line + item_details
         counter += 1
         progress_callback(counter, total)
 
