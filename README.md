@@ -1,7 +1,4 @@
-# Welcome to my-connect-reports !
-
-
-Custom reports
+Custom CBC reports
 
 
 ## License

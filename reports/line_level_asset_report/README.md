@@ -1,3 +1,3 @@
-# Report Line level asset report
+# Line level asset report
 
-This report provides all data I need
+This report retrieves reservation data (products) associated to assets
