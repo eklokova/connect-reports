@@ -128,10 +128,6 @@
           "required": true,
           "choices": [
             {
-              "value": "all",
-              "label": "All"
-            },
-            {
               "value": "draft",
               "label": "Draft"
             },
@@ -181,10 +177,6 @@
           "required": true,
           "description": "Select the type of environment you want to include in report",
           "choices": [
-            {
-              "value": "all",
-              "label": "All"
-            },
             {
               "value": "production",
               "label": "Production"
