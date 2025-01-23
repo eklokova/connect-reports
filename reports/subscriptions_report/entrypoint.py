@@ -13,7 +13,7 @@ asset_headers = [
 ]
 
 asset_params_headers = [
-    'external_reference_id', 'seamless_move', 'discount_group', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
+    'external_reference_id', 'seamless_move', 'discount_group', 'discount_group_consumables', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
     'adobe_vip_number', 'commitment_status', 'commitment_start_date', 'commitment_end_date',
     'recommitment_status', 'recommitment_start_date', 'recommitment_end_date'
 ]
