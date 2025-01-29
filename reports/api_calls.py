@@ -11,7 +11,6 @@ def request_assets_with_env(client, input_data) -> list:
         rql &= R().connection.type.oneof(input_data['connection_type']['choices'])
     if input_data.get('status') and input_data['status']['all'] is False:
         rql &= R().status.oneof(input_data['status']['choices'])
-    print(rql)
     return client('subscriptions').assets.filter(rql).all()
 
 def request_assets(client, input_data) -> list:

@@ -59,8 +59,6 @@ def generate(
     """
 
     assets = api_calls.request_assets_with_env(client, input_data)
-    print('assets COUNT')
-    print(assets)
     total = assets.count()
 
     counter = 0
@@ -72,14 +70,18 @@ def generate(
             marketplace_params = dict.fromkeys(marketplace_headers)
         # assets need to be in a list to yield
         if "commitment_status" in input_data and input_data['commitment_status'] == '3yc':
-            print(asset['id'])
-            print(utils.get_param_value_by_name(asset['params'], 'commitment_status'))
+            # print(asset['id'])
+            # print(utils.get_param_value_by_name(asset['params'], 'commitment_status'))
             if utils.get_param_value_by_name(asset['params'], 'commitment_status') == '-' \
                     or utils.get_param_value_by_name(asset['params'], 'commitment_status') == '':
                 counter += 1
                 progress_callback(counter, total)
                 continue
-
+        items = asset['items']
+        if items:
+            print("Asset ID {}, items {}".format(asset['id'], items))
+        else:
+            print("Asset ID {}, items count 0".format(asset['id']))
         yield _process_line(asset, marketplace_params)
         counter += 1
         progress_callback(counter, total)
