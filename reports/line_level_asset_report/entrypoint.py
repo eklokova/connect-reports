@@ -13,9 +13,9 @@ asset_headers = [
 ]
 
 asset_params_headers = [
-    'external_reference_id', 'seamless_move', 'discount_group', 'discount_group_consumables', 'action_type', 'renewal_date', 'purchase_type', 'adobe_customer_id',
+    'external_reference_id', 'seamless_move', 'discount_group', 'discount_group_consumables', 'action_type', 'auto_renewal_status', 'renewal_date', 'purchase_type', 'adobe_customer_id',
     'adobe_vip_number', 'adobe_user_email', 'commitment_status', 'commitment_start_date', 'commitment_end_date',
-    'recommitment_status', 'recommitment_start_date', 'recommitment_end_date'
+    'recommitment_status', 'recommitment_start_date', 'recommitment_end_date', 'global_sales', 'hvd_code'
 ]
 
 marketplace_headers = [
@@ -58,7 +58,7 @@ def generate(
     :type extra_context_callback: func
     """
 
-    assets = api_calls.request_assets(client, input_data)
+    assets = api_calls.request_assets_with_env(client, input_data)
     total = assets.count()
 
     counter = 0

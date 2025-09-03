@@ -102,10 +102,24 @@ def process_asset_parameters_by_name(asset_params: list, asset_parameters: list)
         if param_id == 'discount_group':
             discount_group = get_discount_level(param['value'])
             params_dict[param_id] = discount_group
+        elif param_id == 'cb_price_level_hint_final_object' and 'structured_value' in param:
+            params_dict['hvd_code'] = get_hvd_code(param)
         elif param_id in asset_parameters:
             params_dict[param_id] = param['value']
 
     return params_dict
+
+def get_hvd_code(param):
+    items = (
+    param.get("structured_value", {})
+        .get("discount", {})
+        .get("items", [])
+    )
+    first_hvd = next(
+        (item.get("rating_attribute") for item in items if item.get("rating_attribute", "").startswith("HVD")),
+        ""
+    )
+    return first_hvd
 
 def handle_renewal_date(asset_creation_date: str) -> date:
     return calculate_renewal_date(asset_creation_date, datetime.now(timezone.utc).date())
