@@ -1,6 +1,7 @@
 from reports import api_calls
 from datetime import datetime, timezone, date
 import calendar
+import json
 
 BASE_CURRENCY = 'USD'
 FOREXAPI_URL = 'https://theforexapi.com/api/latest'
@@ -76,6 +77,8 @@ def process_asset_headers(asset, asset_headers) -> dict:
     for header in asset_headers:
         if '-' in header:
             params[header] = get_value_from_split_header(asset, header)
+        elif header == 'contact':
+            params[header] = get_contact(asset)
         else:
             if header in asset:
                 params[header] = asset[header]
@@ -97,16 +100,18 @@ def process_asset_parameters_by_name(asset_params: list, asset_parameters: list)
     :return: dict with values from asset_params and keys from asset_parameters
     """
     params_dict = dict.fromkeys(asset_parameters)
+    handlers = {
+        'discount_group': lambda param: get_discount_level(param['value']),
+        'auto_renewal_status': lambda param: get_auto_renewal_status(param['value']),
+        'cb_price_level_hint_final_object': lambda param: get_hvd_code(param)
+    }
     for param in asset_params:
         param_id = param['name']
-        if param_id == 'discount_group':
-            discount_group = get_discount_level(param['value'])
-            params_dict[param_id] = discount_group
-        elif param_id == 'cb_price_level_hint_final_object' and 'structured_value' in param:
-            params_dict['hvd_code'] = get_hvd_code(param)
-        elif param_id in asset_parameters:
-            params_dict[param_id] = param['value']
-
+        if param_id in asset_parameters:
+            if param_id in handlers:
+                params_dict[param_id] = handlers[param_id](param)
+            else:
+                params_dict[param_id] = param.get('value','')
     return params_dict
 
 def get_hvd_code(param):
@@ -120,6 +125,34 @@ def get_hvd_code(param):
         ""
     )
     return first_hvd
+
+def get_draft(param):
+    items = (
+    param.get("structured_value", {})
+        .get("discount", {})
+        .get("items", [])
+    )
+    return json.dumps(items)
+
+def get_contact(asset):
+    items = (
+    asset.get("tiers", {})
+        .get("customer", {})
+        .get("contact_info", {})
+        .get("contact", {})
+    )
+    return json.dumps(items)
+
+def get_contact_name(asset):
+    return asset['tiers']['customer']['contact_info']['contact']['first_name'] + ' ' + asset['tiers']['customer']['contact_info']['contact']['last_name']
+
+def get_auto_renewal_status(value: str):
+    if value == 'active_auto_renewal_status':
+        return 'Active'
+    elif value == 'inactive_auto_renewal_status':
+        return 'Inactive'
+    else:
+        return 'Empty'
 
 def handle_renewal_date(asset_creation_date: str) -> date:
     return calculate_renewal_date(asset_creation_date, datetime.now(timezone.utc).date())
